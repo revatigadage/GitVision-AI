@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GitVision AI Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+
+<div class="background-blur blur1"></div>
+<div class="background-blur blur2"></div>
+
+<div class="dashboard">
+    <!-- ========================= -->
+<!-- PROFILE HERO -->
+<!-- ========================= -->
+
+<div class="profile-card">
+
+    <div class="profile-left">
+
+        <img
+            class="avatar"
+            src="{{ data.avatar_url }}"
+            alt="Profile Avatar">
+
+    </div>
+
+    <div class="profile-right">
+
+        <div class="profile-top">
+
+            <div>
+
+                <h1>{{ data.name or data.login }}</h1>
+
+                <h3>@{{ data.login }}</h3>
+
+            </div>
+
+            <div class="developer-score">
+
+                <div class="score-circle">
+
+
+                <div>
+
+                <span>{{ developer_score }}</span>
+
+                <small>/100</small>
+
+                </div>
+
+                </div>
+
+                <p>Developer Score</p>
+
+            </div>
+
+        </div>
+
+        <p class="bio">
+
+            {{ data.bio or "No bio available." }}
+
+        </p>
+
+        <div class="profile-info">
+
+            <div class="info-item">
+                📍 {{ data.location or "Unknown" }}
+            </div>
+
+            <div class="info-item">
+                🏢 {{ data.company or "Not Available" }}
+            </div>
+
+            <div class="info-item">
+                📅 Joined {{ data.created_at[:10] }}
+            </div>
+
+            <div class="info-item">
+                👥 {{ data.followers }} Followers
+            </div>
+
+            <div class="info-item">
+                ➡ {{ data.following }} Following
+            </div>
+
+            <div class="info-item">
+                📁 {{ data.public_repos }} Repositories
+            </div>
+
+        </div>
+
+        <div class="profile-buttons">
+
+            <a
+                href="{{ data.html_url }}"
+                target="_blank"
+                class="primary-btn">
+
+                GitHub Profile →
+
+            </a>
+
+            {% if data.blog %}
+
+            <a
+                href="{{ data.blog }}"
+                target="_blank"
+                class="secondary-btn">
+
+                Website
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ========================= -->
+<!-- QUICK STATS -->
+<!-- ========================= -->
+
+<div class="stats-grid">
+
+    <div class="stat-box">
+
+        <div class="stat-icon">
+            ⭐
+        </div>
+
+        <h2>{{ total_stars }}</h2>
+
+        <p>Total Stars</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <div class="stat-icon">
+            🍴
+        </div>
+
+        <h2>{{ total_forks }}</h2>
+
+        <p>Total Forks</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <div class="stat-icon">
+            💻
+        </div>
+
+        <h2>{{ most_used_language }}</h2>
+
+        <p>Primary Language</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <div class="stat-icon">
+            🌍
+        </div>
+
+        <h2>{{ languages|length }}</h2>
+
+        <p>Languages Used</p>
+
+    </div>
+
+</div>
+<!-- ========================= -->
+<!-- DASHBOARD GRID -->
+<!-- ========================= -->
+
+<div class="dashboard-grid">
+
+    <!-- LEFT COLUMN -->
+
+    <div class="left-column">
+
+        <!-- AI SUMMARY -->
+
+        <div class="card">
+
+            <h2>🤖 AI Portfolio Summary</h2>
+
+            <p class="summary-text">
+
+            This GitHub profile contains
+            <strong>{{ data.public_repos }}</strong> public repositories,
+            uses
+            <strong>{{ languages|length }}</strong> programming languages,
+            has earned
+            <strong>{{ total_stars }}</strong> stars,
+            and has an overall
+            <strong>Developer Score of {{ developer_score }}/100</strong>.
+
+            The strongest programming language is
+            <strong>{{ most_used_language }}</strong>,
+            showing consistent open-source contributions and active repository development.
+
+            </p>
+
+            <div class="summary-tags">
+
+                <span>Open Source</span>
+
+                <span>GitHub</span>
+
+                <span>{{ most_used_language }}</span>
+
+                <span>Developer</span>
+
+            </div>
+
+        </div>
+        <!-- LANGUAGE DISTRIBUTION -->
+
+<div class="card">
+
+    <h2>📊 Language Distribution</h2>
+
+    {% for language, count in languages.items() %}
+
+    <div class="language-item">
+
+        <div class="language-header">
+
+            <span>{{ language }}</span>
+
+            <span>{{ count }}</span>
+
+        </div>
+
+        <div class="progress">
+
+            <div
+                class="progress-fill"
+                style="width: {{ (count / repos|length * 100) if repos|length > 0 else 0 }}%;">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+</div>
+<!-- ========================= -->
+<!-- RIGHT COLUMN -->
+<!-- ========================= -->
+
+<div class="right-column">
+
+
+    <!-- TOP REPOSITORY -->
+
+    <!-- FEATURED REPOSITORY -->
+
+    <div class="featured-repo card">
+        <div class="top-repo-card">
+
+            <div class="top-repo-header">
+
+                <div>
+                    <span class="featured-label">🏆 FEATURED REPOSITORY</span>
+                    <h2>{{ top_repo.name }}</h2>
+                </div>
+
+                <span class="repo-rank">#1</span>
+
+            </div>
+        </div>
+
+        <p class="featured-description">
+            {{ top_repo.description or "A featured project from this GitHub profile." }}
+        </p>
+
+        <div class="top-repo-meta">
+
+            <span>💻 {{ top_repo.language or "Unknown" }}</span>
+
+            <span>⭐ {{ top_repo.stargazers_count }}</span>
+
+            <span>🍴 {{ top_repo.forks_count }}</span>
+
+        </div>
+
+        <div class="top-repo-footer">
+
+            <span class="top-repo-note">
+                Most starred repository
+            </span>
+
+            <a
+                href="{{ top_repo.html_url }}"
+                target="_blank"
+                class="primary-btn">
+
+                Explore Repository →
+                
+            </a>
+
+        </div>
+
+    </div>
+
+        <!-- ACHIEVEMENTS -->
+
+        <div class="card">
+
+            <h2>🏅 Achievements</h2>
+
+            <div class="badges">
+
+                {% if developer_score >= 90 %}
+                <span class="badge gold">🏆 Elite Developer</span>
+                {% endif %}
+
+                {% if total_stars >= 100 %}
+                <span class="badge blue">⭐ Star Collector</span>
+                {% endif %}
+
+                {% if data.public_repos >= 20 %}
+                <span class="badge green">📁 Repository Master</span>
+                {% endif %}
+
+                {% if languages|length >= 3 %}
+                <span class="badge purple">💻 Multi Language</span>
+                {% endif %}
+
+                {% if data.followers >= 100 %}
+                <span class="badge orange">🔥 Popular Developer</span>
+                {% endif %}
+
+                {% if not (
+                    developer_score >= 90 or
+                    total_stars >= 100 or
+                    data.public_repos >= 20 or
+                    languages|length >= 3 or
+                    data.followers >= 100
+                ) %}
+
+                <p>No achievements unlocked yet.</p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- ========================= -->
+<!-- REPOSITORIES -->
+<!-- ========================= -->
+
+<h2 class="section-title">
+
+    🚀 Repositories
+
+</h2>
+
+<div class="search-container">
+
+    <input
+        type="text"
+        id="repoSearch"
+        placeholder="🔍 Search repositories..."
+        onkeyup="searchRepo()">
+
+</div>
+
+<div class="repo-grid">
+
+    {% for repo in repos %}
+
+    <div class="repo-card repo">
+
+        <h3>{{ repo.name }}</h3>
+
+        <p class="repo-description">
+
+            {{ repo.description or "No description available." }}
+
+        </p>
+
+        <div class="repo-details">
+
+            <span>
+                💻 {{ repo.language or "Unknown" }}
+            </span>
+
+            <span>
+                ⭐ {{ repo.stargazers_count }}
+            </span>
+
+            <span>
+                🍴 {{ repo.forks_count }}
+            </span>
+
+        </div>
+
+        <a
+            href="{{ repo.html_url }}"
+            target="_blank"
+            class="repo-link">
+
+            View Repository →
+
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
+
+<div class="footer">
+
+    <p>
+
+    Built with ❤️ by <strong>Revati Gadage</strong><br>
+
+    Powered by Flask • GitHub API • HTML • CSS • JavaScript
+
+    </p>
+
+    <a href="/">
+
+        <button class="back-button">
+
+            ← Analyze Another Profile
+
+        </button>
+
+    </a>
+
+</div>
+
+
+
+<script>
+
+function searchRepo() {
+
+    let input = document.getElementById("repoSearch").value.toLowerCase();
+
+    let repos = document.getElementsByClassName("repo");
+
+    for (let i = 0; i < repos.length; i++) {
+
+        let text = repos[i].innerText.toLowerCase();
+
+        if (text.includes(input)) {
+
+            repos[i].style.display = "block";
+
+        }
+
+        else {
+
+            repos[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+// Smooth Fade Animation
+
+window.onload = function () {
+
+    document.body.style.opacity = "0";
+
+    setTimeout(function () {
+
+        document.body.style.transition = "opacity 0.8s ease";
+
+        document.body.style.opacity = "1";
+
+    }, 100);
+
+};
+
+</script>

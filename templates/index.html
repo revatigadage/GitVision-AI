@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GitVision AI</title>
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🚀 <span>GitVision</span> <strong>AI</strong>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="#">Home</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HERO SECTION -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            ✨ AI-Powered GitHub Analysis
+        </div>
+
+        <h1>
+            Turn Your GitHub Into
+            <span>Developer Insights.</span>
+        </h1>
+
+        <p class="hero-description">
+
+            Analyze repositories, programming languages,
+            contributions and coding impact —
+            all in one intelligent dashboard.
+
+        </p>
+
+
+        <!-- ANALYZE FORM -->
+
+        <form action="/analyze" method="POST" class="analyze-form">
+
+            <div class="input-wrapper">
+
+                <span>🔍</span>
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Enter GitHub username..."
+                    required>
+
+            </div>
+
+            <button type="submit">
+
+                Analyze Profile
+                <span>→</span>
+
+            </button>
+
+        </form>
+
+        {% if error %}
+        <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <p class="hero-note">
+            ⚡ Get your developer profile analysis in seconds
+        </p>
+
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <section class="features" id="features">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <div>
+
+                <h3>Smart Analytics</h3>
+
+                <p>
+                    Explore repositories, languages,
+                    stars and forks through clear analytics.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+            <div>
+
+                <h3>AI Developer Score</h3>
+
+                <p>
+                    Get an overall developer score
+                    based on your GitHub activity.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🏆
+            </div>
+
+            <div>
+
+                <h3>Developer Achievements</h3>
+
+                <p>
+                    Unlock badges based on repositories,
+                    stars, followers and languages.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRUST / MINI STATS -->
+
+    <section class="mini-section">
+
+        <div>
+            <strong>GitHub API</strong>
+            <span>Powered Analytics</span>
+        </div>
+
+        <div>
+            <strong>AI Insights</strong>
+            <span>Developer Scoring</span>
+        </div>
+
+        <div>
+            <strong>100%</strong>
+            <span>Profile Based</span>
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer id="about">
+
+        <p>
+            Built with ❤️ by <strong>Revati Gadage</strong>
+        </p>
+
+        <span>
+            Flask • GitHub API • HTML • CSS • JavaScript
+        </span>
+
+    </footer>
+
+</body>
+
+</html>
